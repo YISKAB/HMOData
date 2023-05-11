@@ -24,19 +24,22 @@ let UserSchema = new mongoose.Schema({
     dateOfIllness: Date,
     dateOfRecovery: Date,
     vaccines: [{
-        date: Date,
-        maker: String,
-        // type: mongoose.Schema.Types.ObjectId,
-        // ref: "vaccine",
-        // unique: true,
-        // required: true,
-        // validate: {
-        //     validator: function (vaccines) {
-        //         return !(vaccines.length > 4);
-        //     },
-        //     message: "Maximum 4 vaccinations per user"
-        // },
-    }]
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "vaccine",
+            unique: true,
+            required: true,
+            validate: {
+                validator: function (vaccines) {
+                    return !(vaccines.length > 4);
+                },
+                message: "Maximum 4 vaccinations per user"
+            },
+        }
+        // {
+        //     date: Date,
+        //     maker: String,
+        // }
+    ]
 })
 const user = mongoose.model("users", UserSchema);
 module.exports = user;

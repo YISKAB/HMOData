@@ -18,7 +18,12 @@ exports.addVaccine = async (obj) => {
 
     })
     vaccine.save();
-    return vaccine;
+    userModel.updateUser(vaccine.idUser, {
+        $push: {
+            vaccines: vaccine._id
+        }
+    })
+
 };
 exports.getVaccine = (ID) => {
     return new Promise((resolve, reject) => {
