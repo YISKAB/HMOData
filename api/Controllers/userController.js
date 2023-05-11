@@ -39,7 +39,12 @@ exports.addUser = async (obj) => {
     dateOfRecovery: obj.dateOfRecovery,
     vaccines: obj.vaccines
   });
-  user.save();
+  user.save(function (err, user) {
+    if (err) {
+      return next(err)
+    }
+    res.json(201, user)
+  });
 };
 exports.getUser = (ID) => {
   return new Promise((resolve, reject) => {

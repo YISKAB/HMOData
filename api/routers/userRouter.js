@@ -23,6 +23,6 @@ router.put("/:ID", async function (req, res) {
 
 router.post("/", async function (req, res) {
     let data = await userController.addUser(req.body)
-    return res.status(200).json(data)
+    return res.status(200).json(data);
 })
 module.exports = router;

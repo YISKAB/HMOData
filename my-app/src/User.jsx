@@ -1,25 +1,6 @@
-import axios from "axios";
-import { useState } from "react";
-const URL = "http://localhost:27017/api";
+
 
 function User(props) {
-  const [vaccine, setVaccine] = useState([]);
-
-
-
-
-  const getAllVaccineOfUser = async (ID) => {
-    try {
-      const resp = await axios.get(`${URL}/vaccines/`, ID);
-      if (resp.status === 200) {
-        setVaccine(resp.data);
-      } else {
-        console.log("notFond")
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   const user = props.user;
 
@@ -35,23 +16,9 @@ function User(props) {
           Cell Phone:{user.cellPhone} <br />
           Date Of Illness: {user.dateOfIllness} <br />
           Date Of Recovery: {user.dateOfRecovery} <br />
-          Vaccines: {vaccine !== undefined &&
-            user.vaccines.map((v) => {
-              return <p>{v.data} , {v.maker}</p>;
-
-            })}<br />
-          {/* Add Vaccine:<br />
-          Date:
-          <input type="date" onChange={(e) => setDate(e.target.value)} /><br />
-          Maker:
-          <input type="text" onChange={(e) => setMaker(e.target.value)} /><br />
-          <button onClick={addVaccine}>Add</button>
-          {vaccines === undefined &&
-            <div>
-              <input onChange={(e) => { props.setImageUrl(e.target.value) }} type="text">ImageUrl</input>
-              <button type="button" className="btn btn-primary btn-sm">Add Vaccine</button>
-            </div>
-          } */}
+          Vaccines: {user.vaccines.map((v) => {
+            return <p>{v.date} , {v.maker}</p>;
+          })}<br />
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import User from "./User";
 import axios from "axios";
 import "./App.css"
-const URL = "http://localhost:27017/api";
+const URL = "http://localhost:27017/api/users";
 
 function App() {
   const [firstName, setFirstName] = useState("");
@@ -19,61 +19,34 @@ function App() {
   const [date, setDate] = useState();
   const [maker, setMaker] = useState("");
   const [users, setUsers] = useState([]);
-  const [vaccines, setVaccines] = useState([]);
 
 
+  useEffect(() => {
+    axios.get(URL).then(resp => {
+      setUsers(resp.data)
+    }).catch(error => {
+      console.log(error);
+    })
+  });
 
-  const getAllUsers = async () => {
+  const updataImg = (img) => {
+    setImageUrl(img);
+  }
+
+  const addUser = async (user) => {
     try {
-      const resp = await axios.get(`${URL}/users/`);
-      if (resp.status === 200) {
-        setUsers(resp.data);
-      } else {
-        console.log("unknown error: " + resp.status);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const addUser = async (user, vaccine) => {
-    try {
-      // { ...user, vaccines: [...vaccines, vaccine._id] }
-      await axios.post(`${URL}/users/`, user);
+      await axios.post(URL, user);
     }
     catch (e) {
       console.log(e);
     }
   }
-  const addVaccine = async () => {
-    try {
-      const resp = await axios.post(`${URL}/vaccines/`, { date, maker });
-      if (resp.status === 200)
-        setVaccines([...vaccines, resp._id])
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  // const getAllVaccineOfUser = async (ID) => {
-  //   try {
-  //     const resp = await axios.get(`${URL}vaccines/${ID}`);
-  //     if (resp.status === 200) {
-  //       setVaccines(resp.data);
-  //     } else {
-  //       console.log("unknown error: " + resp.status);
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
 
   return (
     <>
       <h1>Users</h1>
-      <button onClick={getAllUsers}>All Users</button>
       {users.map((user) => {
-        return <div><User key={user._id} user={user} setImageUrl={setImageUrl} /></div>
+        return <div><User key={user._id} user={user} setImageUrl={updataImg} /></div>
       })}
       <div style={{ float: "right" }}>
         <h1>Add User</h1>
@@ -101,12 +74,11 @@ function App() {
           <input type="date" onChange={(e) => setDateOfIllness(e.target.value)} /> <br />
           Date Of Recovery:
           <input type="date" onChange={(e) => setDateOfRecovery(e.target.value)} /> <br />
-          Add Vaccine:<br />
+          Vaccine 1:<br />
           Date:
           <input type="date" onChange={(e) => setDate(e.target.value)} /><br />
           Maker:
           <input type="text" onChange={(e) => setMaker(e.target.value)} /><br />
-          {/* <button onClick={addVaccine} type="button" className="btn btn-primary btn-sm">Add Vaccine</button> */}
           <button type="submit">Send</button>
         </form>
       </div>
