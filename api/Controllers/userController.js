@@ -38,7 +38,7 @@ exports.addUser = async (obj) => {
     imageUrl: obj.imageUrl,
     dateOfIllness: obj.dateOfIllness,
     dateOfRecovery: obj.dateOfRecovery,
-    vaccines: obj.vaccines
+    vaccines: obj.vaccines,
   });
   user.save(function (err, user) {
     if (err) {
